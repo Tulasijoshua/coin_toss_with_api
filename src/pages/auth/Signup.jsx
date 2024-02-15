@@ -8,11 +8,12 @@ const Signup = () => {
     const navigate = useNavigate()
     const { signup } = useAuthContext();
     const [formValues, setFormValues] = useState({
-        fullName: "",
+        first_name: "",
+        last_name: "",
         username: "",
         email: "",
         password: "",
-        confirmPassword: "",
+        password_confirm: "",
     })
 
     const handleChange = (e) => {
@@ -26,7 +27,7 @@ const Signup = () => {
     const handleSignup = (e) => {
         e.preventDefault();
         signup(formValues);
-        navigate('/login')
+        // navigate('/login')
     }
     return (
         <div className='w-full relative h-[100vh] overflow-hidden'>
@@ -47,7 +48,17 @@ const Signup = () => {
                                     </div>
                                     <div className='text-[2rem] font-light'>|</div>
 
-                                    <input type="text" name='fullName' value={formValues.fullName} onChange={handleChange} className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter your Name' />
+                                    <input type="text" name='first_name' value={formValues.first_name} onChange={handleChange} className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter your First Name' />
+                                </div>
+                                <div className='w-full mb-8 flex items-center gap-[0.7rem] py-[0.2rem] px-[1rem] border border-white'>
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                        </svg>
+                                    </div>
+                                    <div className='text-[2rem] font-light'>|</div>
+
+                                    <input type="text" name='last_name' value={formValues.last_name} onChange={handleChange} className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter your Last Name' />
                                 </div>
                                 <div className='w-full mb-8 flex items-center gap-[0.7rem] py-[0.2rem] px-[1rem] border border-white'>
                                     <div>
@@ -86,7 +97,7 @@ const Signup = () => {
                                         </svg>
                                     </div>
                                     <div className='text-[2rem] font-light'>|</div>
-                                    <input name='confirmPassword' value={formValues.confirmPassword} onChange={handleChange} type="password" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Confirm your Password' />
+                                    <input name='password_confirm' value={formValues.password_confirm} onChange={handleChange} type="password" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Confirm your Password' />
                                 </div>
 
                                 <div className='w-full flex justify-between items-center mb-10'>

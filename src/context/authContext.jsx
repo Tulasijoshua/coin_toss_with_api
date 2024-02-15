@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -34,9 +35,17 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // const signup = (userData) => {
+  //   localStorage.setItem("user", JSON.stringify(userData));
+  //   setUser(userData);
+  // };
   const signup = (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    setUser(userData);
+    axios.post('https://cointossapi.pythonanywhere.com/api/auth/register/', userData)
+      .then(response => {
+        console.log(response)
+      }).catch(err => {
+        console.error(err)
+      })
   };
 
   const logout = () => {
