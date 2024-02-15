@@ -24,6 +24,7 @@ const Login = () => {
     const handleLogin = (e) => {
         e.preventDefault();
         login(forms)
+        
     }
 
 
@@ -37,7 +38,7 @@ const Login = () => {
                             <p className='text-[1.1rem]'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eius.</p>
                         </div>
                         <section className="w-[80%] mx-auto py-[2rem]">
-                            <form onSubmit={handleLogin} className='w-full flex flex-col justify-center items-center'>
+                            <form onSubmit={(e) => handleLogin(e)} className='w-full flex flex-col justify-center items-center'>
                                 <div className='w-full mb-8 flex items-center gap-[0.7rem] py-[0.2rem] px-[1rem] border border-white'>
                                     <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

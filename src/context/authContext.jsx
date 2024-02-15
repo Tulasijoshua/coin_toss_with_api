@@ -7,6 +7,8 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [signMsg, setSignMsg] = useState(null);
+  const [loginMsg, setLoginMsg] = useState(null)
+  const [tokens, setTokens] = useState('')
   const [user, setUser] = useState(() => {
     const storedUser = sessionStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
@@ -18,37 +20,23 @@ const AuthProvider = ({ children }) => {
     sessionStorage.setItem('user', JSON.stringify(user));
   }, [user]);
 
-  // const login = (userData) => {
-  //   const storedUser = JSON.parse(localStorage.getItem("user"));
-  //   if (storedUser && userData.password === storedUser.password && userData.username === storedUser.username && userData.email === storedUser.email) {
-  //     setUser(userData);
-  //     setIsLogin(true)
-  //     navigate('/')
-  //     localStorage.setItem("isLogin", JSON.stringify(isLogin));
-  //   } else if (userData.username !== storedUser.username) {
-  //     alert("Invalid username. Please try again.");
-  //   } else if (userData.email !== storedUser.email) {
-  //     alert("Invalid email. Please try again.");
-  //   } else if (userData.password !== storedUser.password) {
-  //     alert("Invalid password. Please try again.");
-  //   } else {
-  //     alert("All fields are required.");
-
-  //   }
-  // };
+  
   const login = (userData) => {
     axios.post(`${BASE_URL}api/auth/login/`, userData).then(response => {
-      console.log(response)
+      console.log(response.data);
+      setLoginMsg(response.data.message)
+      const user = response.data.tokens.User_info
+      const tokens = response.data.tokens.access
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user)
+      localStorage.setItem("tokens", JSON.stringify(tokens));
+      setTokens(tokens)
+      navigate('/')
     }).catch(err => {
       console.error(err)
     })
     
   };
-
-  // const signup = (userData) => {
-  //   localStorage.setItem("user", JSON.stringify(userData));
-  //   setUser(userData);
-  // };
 
   const signup = (userData) => {
     axios.post(`${BASE_URL}api/auth/register/`, userData)
