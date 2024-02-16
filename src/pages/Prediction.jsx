@@ -5,8 +5,11 @@ import { FcMoneyTransfer } from "react-icons/fc";
 import head from "../assets/head.jpg";
 import tail from "../assets/tail.jpg";
 import { useAuthContext } from "../context/authContext";
+import Modal from "../components/Modal";
+import Deposite from "./Deposite";
 
 const Prediction = () => {
+  const [addModal, setAddModal] = useState(false)
   const { logout } = useAuthContext();
   const {
     modalIsOpen,
@@ -36,6 +39,12 @@ const Prediction = () => {
     setModalIsOpen(true)
   }
 
+  const handleOpenModal = () => {
+    setAddModal(true)
+    console.log('Added')
+    return <Modal />
+  }
+
   return (
     <div className="w-full">
       <div className="navbg w-full h-[100px] flex flex-col justify-center items-center fixed">
@@ -47,7 +56,7 @@ const Prediction = () => {
             <button onClick={logout} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Logout</button>
           </div>
           <div className="absolute top-[2rem] right-[12rem]">
-            <button onClick={logout} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Deposite</button>
+            <button onClick={handleOpenModal} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Deposite</button>
           </div>
         </div>
       </div>
