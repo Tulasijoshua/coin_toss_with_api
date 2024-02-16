@@ -42,8 +42,13 @@ const Prediction = () => {
         <h2 className="xl:text-6xl text-4xl text-[#fff] italic font-semibold">
           Predict & Win
         </h2>
-        <div className="absolute top-[2rem] right-[2rem]">
-          <button onClick={logout} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Logout</button>
+        <div className="flex justify-end items-center gap-2">
+          <div className="absolute top-[2rem] right-[2rem]">
+            <button onClick={logout} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Logout</button>
+          </div>
+          <div className="absolute top-[2rem] right-[12rem]">
+            <button onClick={logout} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Deposite</button>
+          </div>
         </div>
       </div>
       <div className="maxContainer w-[70%] mx-auto pt-[8rem] pb-[3rem]">

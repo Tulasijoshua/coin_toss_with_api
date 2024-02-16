@@ -25,8 +25,8 @@ const AuthProvider = ({ children }) => {
     axios.post(`${BASE_URL}api/auth/login/`, userData).then(response => {
       console.log(response.data);
       setLoginMsg(response.data.message)
-      const user = response.data.tokens.User_info
-      const tokens = response.data.tokens.access
+      const user = response.data.user_data
+      const tokens = response.data.tokens
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user)
       localStorage.setItem("tokens", JSON.stringify(tokens));
@@ -51,6 +51,8 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     navigate('/login')
     sessionStorage.removeItem('user');
+    localStorage.removeItem('user');
+    localStorage.removeItem('tokens');
     setUser(null);
     setIsLogin(false)
   };
