@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ResultModal from "../components/ResultModal";
 import { usePredictionContext } from "../context/PredictionContext";
 import { FcMoneyTransfer } from "react-icons/fc";
@@ -8,9 +8,14 @@ import { useAuthContext } from "../context/authContext";
 import Deposite from "./Deposite";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/modal/Modal";
+import { Getter } from "../utils/Getters";
+import axios from "axios";
+import { endpoint } from "../utils/Endpoints";
 
 const Prediction = ({addNew}) => {
+  const get = Getter()
   const navigate = useNavigate()
+  const [getBalance, setGetBalance] = useState(null)
   const [state, setState] = useState({
     addNew: addNew
 })
@@ -27,14 +32,22 @@ const Prediction = ({addNew}) => {
     setCoinPrediction
   } = usePredictionContext();
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    axios.get(endpoint.getUserBalance, get.headers)
+        .then(res=>{
+            console.log(res)
+            setGetBalance(res.data.balance)
+        }).catch(err=>{
+            console.log(err)
+        })
+  }, [])
 
+  const handleSubmit = () => {
     const num = parseInt(amount, 10);
     if (num < 0) {
       alert('Enter valid amount to proceed!');
       return
     }
-
     const coinPrediction = coinTossPrediction(
       predict,
       num,
@@ -49,16 +62,21 @@ const Prediction = ({addNew}) => {
       {
           addNew && <Modal close={()=>{navigate(-1, {replace: true})}} content={<Deposite fetchData={()=>fetchDetails()} close={()=>navigate(-1, {replace: true})}/>}/>
       }
-      <div className="navbg w-full h-[100px] flex flex-col justify-center items-center fixed">
-        <h2 className="xl:text-6xl text-4xl text-[#fff] italic font-semibold">
-          Predict & Win
-        </h2>
-        <div className="flex justify-end items-center gap-2">
-          <div className="absolute top-[2rem] right-[2rem]">
-            <button onClick={logout} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Logout</button>
+      <div className="navbg w-full h-[100px] flex flex-col justify-between items-center fixed">
+        <div className="h-full w-[85%] mx-auto flex justify-between items-center">
+          <div>
+            <div className="mont text-white text-[1.2rem] font-semibold">Balance: <span className="text-[1.5rem]">GH₵ {getBalance}</span> </div>
           </div>
-          <div className="absolute top-[2rem] right-[12rem]">
-            <button onClick={() => navigate('prediction/deposite')} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Deposite</button>
+          <h2 className="xl:text-6xl text-4xl text-[#fff] italic font-semibold">
+            Predict & Win
+          </h2>
+          <div className="flex justify-end items-center gap-2">
+            <div className="">
+              <button onClick={logout} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Logout</button>
+            </div>
+            <div className="">
+              <button onClick={() => navigate('prediction/deposite')} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Deposite</button>
+            </div>
           </div>
         </div>
       </div>

@@ -38,12 +38,13 @@ const Login = () => {
         .then(res=>{
             console.log(res.data)
             localStorage.setItem('user', JSON.stringify({
+                id: res.data.user_data.id,
                 email: res.data.user_data.Email,
                 first_name:res.data.user_data.First_name,
                 last_name:res.data.user_data.Last_name,
                 username:res.data.user_data.Username,
             }))
-            localStorage.setItem('token', JSON.stringify(res.data.tokens))
+            localStorage.setItem('token', res.data.tokens.access_token)
             localStorage.setItem('isLogin', 'true')
 
             // navigate('/', {replace: true})

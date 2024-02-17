@@ -52,7 +52,8 @@ const AuthProvider = ({ children }) => {
     navigate('/login')
     sessionStorage.removeItem('user');
     localStorage.removeItem('user');
-    localStorage.removeItem('tokens');
+    localStorage.removeItem('token');
+    localStorage.removeItem('isLogin');
     setUser(null);
     setIsLogin(false)
   };
