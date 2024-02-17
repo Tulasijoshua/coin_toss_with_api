@@ -16,9 +16,14 @@ const Prediction = ({addNew}) => {
   const get = Getter()
   const navigate = useNavigate()
   const [getBalance, setGetBalance] = useState(null)
+  const [results, setResults] = useState(null)
   const [state, setState] = useState({
-    addNew: addNew
-})
+    details: {
+      side: '',
+      stake_amount: '',
+    },
+    isRequesting: false,
+  })
   const [addModal, setAddModal] = useState(false)
   const { logout } = useAuthContext();
   const {
@@ -32,30 +37,34 @@ const Prediction = ({addNew}) => {
     setCoinPrediction
   } = usePredictionContext();
 
+  // getting balance
   useEffect(() => {
     axios.get(endpoint.getUserBalance, get.headers)
         .then(res=>{
-            console.log(res)
+            // console.log(res)
             setGetBalance(res.data.balance)
         }).catch(err=>{
             console.log(err)
         })
   }, [])
 
-  const handleSubmit = () => {
-    const num = parseInt(amount, 10);
-    if (num < 0) {
-      alert('Enter valid amount to proceed!');
-      return
-    }
-    const coinPrediction = coinTossPrediction(
-      predict,
-      num,
-    );
-    setCoinPrediction(coinPrediction)
-
-    setModalIsOpen(true)
+// prediction
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setState({...state, isRequesting: true})
+    axios.post(endpoint.predictSide, state.details, get.headers)
+    .then(res=>{
+        setState({...state, isRequesting: false})
+        console.log(res.data)
+        setResults(res.data)
+        setModalIsOpen(true)
+        
+    }).catch(err=>{
+        setState({...state, isRequesting: false})
+        console.log(err.response)
+    })
   }
+
 
   return (
     <div className="w-full">
@@ -120,8 +129,9 @@ const Prediction = ({addNew}) => {
               <input
                 className="w-[100px] h-full px-[0.5rem] text-[1.2rem] text-black border focus:outline-none"
                 type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                value={state.details.stake_amount}
+                // onChange={(e) => setState(e.target.value)}
+                onChange={(e)=>setState({...state, details:{...state.details, stake_amount: e.target.value}})}
               />
             </div>
           </div>
@@ -132,7 +142,8 @@ const Prediction = ({addNew}) => {
               </div>
               <div
                 className="mt-[2rem] py-[0.5rem] px-[1.5rem] bg-blue-600 rounded-md text-[1rem] text-white font-semibold active:bg-blue-700 cursor-pointer"
-                onClick={() => setPredict("Head")}
+                // onClick={() => setState("head")}
+                onClick={()=>setState({...state, details:{...state.details, side: 'head'}})}
               >
                 Head
               </div>
@@ -143,7 +154,8 @@ const Prediction = ({addNew}) => {
               </div>
               <div
                 className="mt-[2rem] py-[0.5rem] px-[1.5rem] bg-blue-600 rounded-md text-[1rem] text-white font-semibold active:bg-blue-700 cursor-pointer"
-                onClick={() => setPredict("Tail")}
+                // onClick={() => setState("tail")}
+                onClick={()=>setState({...state, details:{...state.details, side: 'tail'}})}
               >
                 Tail
               </div>
@@ -151,7 +163,7 @@ const Prediction = ({addNew}) => {
           </div>
           <div className="flex flex-col justify-center items-center pt-[2rem]">
             <button
-              disabled={predict == "" || amount == ""}
+              disabled={state.details.side == "" || state.details.stake_amount == ""}
               className="py-[0.7rem] px-[1.7rem] text-[1rem] font-semibold text-white bg-red-600 rounded-md disabled:bg-red-300 "
               onClick={handleSubmit}
             >
@@ -159,7 +171,7 @@ const Prediction = ({addNew}) => {
             </button>
           </div>
         </div>
-        {modalIsOpen && <ResultModal />}
+        {modalIsOpen && <ResultModal results={results} />}
       </div>
     </div>
   );

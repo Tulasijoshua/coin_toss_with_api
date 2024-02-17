@@ -7,8 +7,9 @@ import loss from "../assets/loss.gif";
 
 Modal.setAppElement("#root");
 
-const ResultModal = () => {
+const ResultModal = ({results}) => {
   const [isProcessing, setIsProcessing] = useState(true);
+  const [isWon, setIsWon] = useState(results.prediction.win)
   const {
     amount,
     setAmount,
@@ -21,6 +22,8 @@ const ResultModal = () => {
     isWin,
     result,
   } = usePredictionContext();
+
+  console.log(results)
 
   return (
     <div>
@@ -53,7 +56,7 @@ const ResultModal = () => {
           )}
           {!isProcessing && (
             <div className="mont my-[0.2rem]">
-              {isWin ? (
+              {isWon === true ? (
                 <div className="">
                   <div className="2xl:w-[250px] w-[150px] 2xl:h-[250px] h-[150px] mx-auto ">
                     <img
@@ -64,10 +67,7 @@ const ResultModal = () => {
                   </div>
                   <div className="2xl:pt-[2rem] pt-[1rem]">
                     <div className="text-center 2xl:text-[1.8rem] text-[1.2rem]">
-                      Congratulations!🎊 You predicted {predict}.
-                    </div>
-                    <div className="text-center 2xl:text-[1.8rem] text-[1.2rem]">
-                      You won GHS {amountWon} cedis.
+                      {results.message}.
                     </div>
                   </div>
                 </div>
@@ -82,11 +82,10 @@ const ResultModal = () => {
                   </div>
                   <div className="2xl:pt-[1.5rem] pt-[1rem]">
                     <div className="text-center 2xl:text-[1.8rem] xl:text-[1.2rem] text-[1rem]">
-                      Sorry!😬 You predicted {predict}, but the coin landed on{" "}
-                      {result}.
+                      {results.message}.
                     </div>
                     <div className="text-center 2xl:text-[1.8rem] xl:text-[1.2rem] text-[1rem] ">
-                      You lost GHS{amount} cedis.
+                      {/* You lost GHS{amount} cedis. */}
                     </div>
                   </div>
                 </div>
@@ -100,7 +99,6 @@ const ResultModal = () => {
                 onClick={() => {
                   coinPrediction;
                   setIsProcessing(false);
-                  console.log("You chose", predict, "landed on", result);
                 }}
               >
                 View Results
@@ -112,7 +110,6 @@ const ResultModal = () => {
                 disabled={isProcessing}
                 onClick={() => {
                   setModalIsOpen(false);
-                  setPredict("");
                   setAmount("");
                 }}
               >
