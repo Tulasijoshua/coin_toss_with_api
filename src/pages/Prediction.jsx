@@ -5,10 +5,15 @@ import { FcMoneyTransfer } from "react-icons/fc";
 import head from "../assets/head.jpg";
 import tail from "../assets/tail.jpg";
 import { useAuthContext } from "../context/authContext";
-import Modal from "../components/Modal";
 import Deposite from "./Deposite";
+import { useNavigate } from "react-router-dom";
+import Modal from "../components/modal/Modal";
 
-const Prediction = () => {
+const Prediction = ({addNew}) => {
+  const navigate = useNavigate()
+  const [state, setState] = useState({
+    addNew: addNew
+})
   const [addModal, setAddModal] = useState(false)
   const { logout } = useAuthContext();
   const {
@@ -39,14 +44,11 @@ const Prediction = () => {
     setModalIsOpen(true)
   }
 
-  const handleOpenModal = () => {
-    setAddModal(true)
-    console.log('Added')
-    return <Modal />
-  }
-
   return (
     <div className="w-full">
+      {
+          addNew && <Modal close={()=>{navigate(-1, {replace: true})}} content={<Deposite fetchData={()=>fetchDetails()} close={()=>navigate(-1, {replace: true})}/>}/>
+      }
       <div className="navbg w-full h-[100px] flex flex-col justify-center items-center fixed">
         <h2 className="xl:text-6xl text-4xl text-[#fff] italic font-semibold">
           Predict & Win
@@ -56,7 +58,7 @@ const Prediction = () => {
             <button onClick={logout} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Logout</button>
           </div>
           <div className="absolute top-[2rem] right-[12rem]">
-            <button onClick={handleOpenModal} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Deposite</button>
+            <button onClick={() => navigate('prediction/deposite')} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Deposite</button>
           </div>
         </div>
       </div>

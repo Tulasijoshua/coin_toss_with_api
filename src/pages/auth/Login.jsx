@@ -3,28 +3,54 @@ import bgImg from '../../assets/predict02.jpg'
 import axios from 'axios'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../context/authContext'
+import { endpoint } from '../../utils/Endpoints'
 
 const Login = () => {
     const { login } = useAuthContext()
     const navigate = useNavigate()
-    const [forms, setForms] = useState({
-        username: "",
-        email: "",
-        password: "",
+    // const [forms, setForms] = useState({
+    //     username: "",
+    //     email: "",
+    //     password: "",
+    // })
+
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setForms({ 
+    //         ...forms, 
+    //         [name]: value 
+    //     });
+    // }
+
+    // const handleLogin = (e) => {
+    //     e.preventDefault();
+    //     login(forms)    
+    // }
+
+    const [state, setState] = useState({
+        details: { email: '', password: '' }
     })
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForms({ 
-            ...forms, 
-            [name]: value 
-        });
-    }
-
-    const handleLogin = (e) => {
+    const SubmitLogin = (e) => {
         e.preventDefault();
-        login(forms)
-        
+
+        axios.post(endpoint.login, state.details)
+        .then(res=>{
+            console.log(res.data)
+            localStorage.setItem('user', JSON.stringify({
+                email: res.data.user_data.Email,
+                first_name:res.data.user_data.First_name,
+                last_name:res.data.user_data.Last_name,
+                username:res.data.user_data.Username,
+            }))
+            localStorage.setItem('token', JSON.stringify(res.data.tokens))
+            localStorage.setItem('isLogin', 'true')
+
+            // navigate('/', {replace: true})
+            navigate('/')
+        }).catch(err=>{
+            console.log(err)
+        })
     }
 
 
@@ -38,7 +64,7 @@ const Login = () => {
                             <p className='text-[1.1rem]'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eius.</p>
                         </div>
                         <section className="w-[80%] mx-auto py-[2rem]">
-                            <form onSubmit={(e) => handleLogin(e)} className='w-full flex flex-col justify-center items-center'>
+                            <form onSubmit={(e)=>SubmitLogin(e)} className='w-full flex flex-col justify-center items-center'>
                                 <div className='w-full mb-8 flex items-center gap-[0.7rem] py-[0.2rem] px-[1rem] border border-white'>
                                     <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -47,7 +73,7 @@ const Login = () => {
                                     </div>
                                     <div className='text-[2rem] font-light'>|</div>
 
-                                    <input name='username' value={forms.username} onChange={handleChange} type="text" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter your username' />
+                                    <input name='username' value={state.details.username} onChange={(e)=>setState({...state, details: {...state.details, username: e.target.value}})} type="text" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter your username' />
                                 </div>
                                 <div className='w-full mb-8 flex items-center gap-[0.7rem] py-[0.2rem] px-[1rem] border border-white'>
                                     <div>
@@ -57,7 +83,7 @@ const Login = () => {
                                     </div>
                                     <div className='text-[2rem] font-light'>|</div>
 
-                                    <input name='email' value={forms.email} onChange={handleChange} type="email" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter your email address' />
+                                    <input name='email' value={state.details.email} onChange={(e)=>setState({...state, details: {...state.details, email: e.target.value}})} type="email" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter your email address' />
                                 </div>
                                 <div className='w-full mb-7 flex items-center gap-[0.7rem] py-[0.2rem] px-[1rem] border border-white'>
                                     <div>
@@ -66,7 +92,7 @@ const Login = () => {
                                         </svg>
                                     </div>
                                     <div className='text-[2rem] font-light'>|</div>
-                                    <input name='password' value={forms.password} onChange={handleChange} type="password" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter your password' />
+                                    <input name='password' value={state.details.password} onChange={(e)=>setState({...state, details: {...state.details, password: e.target.value}})} type="password" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter your password' />
                                 </div>
 
                                 <div className='w-full flex justify-between items-center mb-10'>

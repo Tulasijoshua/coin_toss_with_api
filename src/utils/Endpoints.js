@@ -1,6 +1,7 @@
-const base = 'https://votecoupcode.pythonanywhere.com/api/v1/'
+import { BASE_URL } from "./config"
 
 export const endpoint = {
-    login: base + 'accounts/login',
-    
+    login: BASE_URL + 'api/auth/login/',
+    updateBalance: (id) => BASE_URL + `api/user-profiles/${id}/update_balance/`,
+    getUser: (id) => BASE_URL + `api/user-profiles/${id}/`
 }
