@@ -43,6 +43,7 @@ const AuthProvider = ({ children }) => {
       .then(response => {
         console.log(response.data)
         setSignMsg(response.data)
+        navigate('/login')
       }).catch(err => {
         console.error(err)
       })

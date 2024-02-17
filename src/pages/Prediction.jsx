@@ -6,7 +6,7 @@ import head from "../assets/head.jpg";
 import tail from "../assets/tail.jpg";
 import { useAuthContext } from "../context/authContext";
 import Deposite from "./Deposite";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Modal from "../components/modal/Modal";
 import { Getter } from "../utils/Getters";
 import axios from "axios";
@@ -14,7 +14,8 @@ import { endpoint } from "../utils/Endpoints";
 
 const Prediction = ({addNew}) => {
   const get = Getter()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation(); 
   const [getBalance, setGetBalance] = useState(null)
   const [results, setResults] = useState(null)
   const [state, setState] = useState({
@@ -32,7 +33,7 @@ const Prediction = ({addNew}) => {
   } = usePredictionContext();
 
   // getting balance
-  useEffect(() => {
+  const fetchUserBalance = () => {
     axios.get(endpoint.getUserBalance, get.headers)
         .then(res=>{
             // console.log(res)
@@ -40,7 +41,14 @@ const Prediction = ({addNew}) => {
         }).catch(err=>{
             console.log(err)
         })
+  }
+  useEffect(() => {
+    fetchUserBalance()
   }, [])
+
+  useEffect(() => {
+    fetchUserBalance()
+  }, [navigate])
 
 // prediction
   const handleSubmit = (e) => {
@@ -52,12 +60,16 @@ const Prediction = ({addNew}) => {
         console.log(res.data)
         setResults(res.data)
         setModalIsOpen(true)
-        
     }).catch(err=>{
         setState({...state, isRequesting: false})
         console.log(err.response)
     })
   }
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    fetchUserBalance();
+  };
 
 
   return (
@@ -78,7 +90,7 @@ const Prediction = ({addNew}) => {
               <button onClick={logout} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Logout</button>
             </div>
             <div className="">
-              <button onClick={() => navigate('prediction/deposite')} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Deposite</button>
+              <button onClick={() => navigate('prediction/deposite')} className="px-[1.5rem] py-[0.5rem] text-[1rem] bg-blue-600 text-white ">Deposit</button>
             </div>
           </div>
         </div>
@@ -165,7 +177,7 @@ const Prediction = ({addNew}) => {
             </button>
           </div>
         </div>
-        {modalIsOpen && <ResultModal results={results} />}
+        {modalIsOpen && <ResultModal results={results} closeModal={closeModal} />}
       </div>
     </div>
   );

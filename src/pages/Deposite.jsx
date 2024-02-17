@@ -23,16 +23,17 @@ const Deposite = () => {
         setState({...state, isRequesting: false})
         console.log(res.data)
         // close()
-        navigate(-1)
+        navigate(-1, {replace: true})
     }).catch(err=>{
         setState({...state, isRequesting: false})
         console.log(err)
     })
   }
+  
   return (
     <form onSubmit={(e)=>SubmitAdd(e)} className='w-full flex flex-col'>
         {state.isRequesting && <ModalLoading/>}
-        <h1 className='text-2xl font-semibold mb-5'>Deposite Amount</h1>
+        <h1 className='text-2xl font-semibold mb-5'>Deposit Amount</h1>
 
         <section className="w-full flex flex-col mb-3">
             <p className='text-[1.2rem]'>Amount</p>

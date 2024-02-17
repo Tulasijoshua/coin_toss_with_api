@@ -7,7 +7,7 @@ import loss from "../assets/loss.gif";
 
 Modal.setAppElement("#root");
 
-const ResultModal = ({results}) => {
+const ResultModal = ({results, closeModal}) => {
   const [isProcessing, setIsProcessing] = useState(true);
   const [isWon, setIsWon] = useState(results.prediction.win)
   const {
@@ -50,7 +50,7 @@ const ResultModal = ({results}) => {
           )}
           {!isProcessing && (
             <div className="mont my-[0.2rem]">
-              <div className="py-[1rem] flex justify-center items-center">
+              <div className="pb-[0.5rem] flex justify-center items-center">
                 <div className="w-fit px-2 py-[5px] text-center text-[1.2rem]">You chose {results.prediction.side_predicted} and it landed on {results.result}</div>
               </div>
               {isWon === true ? (
@@ -105,10 +105,7 @@ const ResultModal = ({results}) => {
               <button
                 className="py-[0.5rem] px-[1.5rem] rounded-md text-[1rem] text-white font-semibold bg-red-600 hover:bg-red-700"
                 disabled={isProcessing}
-                onClick={() => {
-                  setModalIsOpen(false);
-                  setAmount("");
-                }}
+                onClick={closeModal}
               >
                 Close
               </button>

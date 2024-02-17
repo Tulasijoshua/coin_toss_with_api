@@ -27,7 +27,6 @@ const Signup = () => {
     const handleSignup = (e) => {
         e.preventDefault();
         signup(formValues);
-        // navigate('/login')
     }
     return (
         <div className='w-full relative h-[100vh] overflow-hidden'>
