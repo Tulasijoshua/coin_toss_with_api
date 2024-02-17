@@ -29,12 +29,6 @@ const Prediction = ({addNew}) => {
   const {
     modalIsOpen,
     setModalIsOpen,
-    predict,
-    setPredict,
-    coinTossPrediction,
-    amount, 
-    setAmount,
-    setCoinPrediction
   } = usePredictionContext();
 
   // getting balance
@@ -69,7 +63,7 @@ const Prediction = ({addNew}) => {
   return (
     <div className="w-full">
       {
-          addNew && <Modal close={()=>{navigate(-1, {replace: true})}} content={<Deposite fetchData={()=>fetchDetails()} close={()=>navigate(-1, {replace: true})}/>}/>
+          addNew && <Modal close={()=>{navigate(-1, {replace: true})}} content={<Deposite close={()=>navigate(-1, {replace: true})}/>}/>
       }
       <div className="navbg w-full h-[100px] flex flex-col justify-between items-center fixed">
         <div className="h-full w-[85%] mx-auto flex justify-between items-center">

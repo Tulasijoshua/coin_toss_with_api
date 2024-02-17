@@ -21,3 +21,16 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.4);
   }
+
+  @media only screen and (min-width: 1280px) {
+    .Modal {
+      position: absolute;
+      top: 130px;
+      left: 420px;
+      right: 420px;
+      bottom: 70px;
+      background-color: #fff;
+      border-radius: 1rem;
+      padding: 2rem 1rem;
+    }
+  }

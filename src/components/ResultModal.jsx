@@ -11,16 +11,10 @@ const ResultModal = ({results}) => {
   const [isProcessing, setIsProcessing] = useState(true);
   const [isWon, setIsWon] = useState(results.prediction.win)
   const {
-    amount,
     setAmount,
     coinPrediction,
     modalIsOpen,
     setModalIsOpen,
-    predict,
-    setPredict,
-    amountWon,
-    isWin,
-    result,
   } = usePredictionContext();
 
   console.log(results)
@@ -56,9 +50,12 @@ const ResultModal = ({results}) => {
           )}
           {!isProcessing && (
             <div className="mont my-[0.2rem]">
+              <div className="py-[1rem] flex justify-center items-center">
+                <div className="w-fit px-2 py-[5px] text-center text-[1.2rem]">You chose {results.prediction.side_predicted} and it landed on {results.result}</div>
+              </div>
               {isWon === true ? (
                 <div className="">
-                  <div className="2xl:w-[250px] w-[150px] 2xl:h-[250px] h-[150px] mx-auto ">
+                  <div className="2xl:w-[230px] w-[130px] 2xl:h-[230px] h-[130px] mx-auto ">
                     <img
                       className="w-full h-full "
                       src={congrats}
