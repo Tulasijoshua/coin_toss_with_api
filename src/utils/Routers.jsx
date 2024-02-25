@@ -10,7 +10,7 @@ const Routers = () => {
     <div>
         <Routes>
             {/* <Route path='/' element={<PrivateRoute element={<Prediction />} />} /> */}
-            <Route path='/' element={<Prediction />} />
+            <Route path='/' element={<Prediction />}  />
             <Route path='/prediction/deposite' element={<Prediction addNew={true}/>} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/login' element={<Login />} />
