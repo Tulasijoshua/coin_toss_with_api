@@ -6,26 +6,7 @@ import { useAuthContext } from '../../context/authContext'
 import { endpoint } from '../../utils/Endpoints'
 
 const Login = () => {
-    const { login } = useAuthContext()
     const navigate = useNavigate()
-    // const [forms, setForms] = useState({
-    //     username: "",
-    //     email: "",
-    //     password: "",
-    // })
-
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setForms({ 
-    //         ...forms, 
-    //         [name]: value 
-    //     });
-    // }
-
-    // const handleLogin = (e) => {
-    //     e.preventDefault();
-    //     login(forms)    
-    // }
 
     const [state, setState] = useState({
         details: { email: '', password: '' }

@@ -13,7 +13,7 @@ function App() {
     if(!get.isLogin){
       navigate('/login', {replace: true})
     }
-  })
+  }, [])
 
   return (
     <>
