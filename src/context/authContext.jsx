@@ -39,11 +39,11 @@ const AuthProvider = ({ children }) => {
   };
 
   const signup = (userData) => {
-    axios.post(`${BASE_URL}api/auth/register/`, userData)
+    axios.post(`${BASE_URL}api/register/`, userData)
       .then(response => {
         console.log(response.data)
         setSignMsg(response.data)
-        navigate('/login')
+        navigate('/confirm')
       }).catch(err => {
         console.error(err)
       })

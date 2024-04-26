@@ -34,10 +34,10 @@ const Prediction = ({addNew}) => {
 
   // getting balance
   const fetchUserBalance = () => {
-    axios.get(endpoint.getUserBalance, get.headers)
+    axios.get(endpoint.profile, get.headers)
         .then(res=>{
-            // console.log(res)
-            setGetBalance(res.data.balance)
+            console.log(res)
+            setGetBalance(res.data[0])
         }).catch(err=>{
             console.log(err)
         })
@@ -45,6 +45,7 @@ const Prediction = ({addNew}) => {
   useEffect(() => {
     fetchUserBalance()
   }, [])
+  console.log(getBalance)
 
   useEffect(() => {
     fetchUserBalance()
@@ -80,7 +81,7 @@ const Prediction = ({addNew}) => {
       <div className="navbg w-full h-[100px] flex flex-col justify-between items-center fixed">
         <div className="h-full w-[85%] mx-auto flex justify-between items-center">
           <div>
-            <div className="mont text-white text-[1.2rem] font-semibold">Balance: <span className="text-[1.5rem]">GH₵ {getBalance}</span> </div>
+              <div className="mont text-white text-[1.2rem] font-semibold">Balance: <span className="text-[1.5rem]">GH₵ {getBalance?.balance}</span> </div>
           </div>
           <h2 className="xl:text-6xl text-4xl text-[#fff] italic font-semibold">
             Predict & Win
@@ -147,7 +148,7 @@ const Prediction = ({addNew}) => {
                 <img className="w-full h-full" src={head} alt="" />
               </div>
               <div
-                className="mt-[2rem] py-[0.5rem] px-[1.5rem] bg-blue-600 rounded-md text-[1rem] text-white font-semibold active:bg-blue-700 cursor-pointer"
+                className={`mt-[2rem] py-[0.5rem] px-[1.5rem] ${state.details.side === 'head' ? 'bg-blue-600' : 'bg-blue-300'}  rounded-md text-[1rem] text-white font-semibold active:bg-blue-700 cursor-pointer`}
                 // onClick={() => setState("head")}
                 onClick={()=>setState({...state, details:{...state.details, side: 'head'}})}
               >
@@ -159,7 +160,7 @@ const Prediction = ({addNew}) => {
                 <img className="w-full h-full" src={tail} alt="" />
               </div>
               <div
-                className="mt-[2rem] py-[0.5rem] px-[1.5rem] bg-blue-600 rounded-md text-[1rem] text-white font-semibold active:bg-blue-700 cursor-pointer"
+                className={`mt-[2rem] py-[0.5rem] px-[1.5rem] ${state.details.side === 'tail' ? 'bg-blue-600' : 'bg-blue-300'} rounded-md text-[1rem] text-white font-semibold active:bg-blue-700 cursor-pointer`}
                 // onClick={() => setState("tail")}
                 onClick={()=>setState({...state, details:{...state.details, side: 'tail'}})}
               >
@@ -177,7 +178,7 @@ const Prediction = ({addNew}) => {
             </button>
           </div>
         </div>
-        {modalIsOpen && <ResultModal results={results} closeModal={closeModal} />}
+        {modalIsOpen && <ResultModal results={results} closeModal={closeModal} side={state.details.side} />}
       </div>
     </div>
   );

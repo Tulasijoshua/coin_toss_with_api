@@ -7,9 +7,10 @@ import loss from "../assets/loss.gif";
 
 Modal.setAppElement("#root");
 
-const ResultModal = ({results, closeModal}) => {
+const ResultModal = ({results, closeModal, side}) => {
   const [isProcessing, setIsProcessing] = useState(true);
-  const [isWon, setIsWon] = useState(results.prediction.win)
+  // const [isWon, setIsWon] = useState(results.prediction.win)
+  const [isWon, setIsWon] = useState(results.win)
   const {
     setAmount,
     coinPrediction,
@@ -17,7 +18,8 @@ const ResultModal = ({results, closeModal}) => {
     setModalIsOpen,
   } = usePredictionContext();
 
-  console.log(results)
+  console.log('results', results)
+  console.log(side)
 
   return (
     <div>
@@ -51,7 +53,7 @@ const ResultModal = ({results, closeModal}) => {
           {!isProcessing && (
             <div className="mont my-[0.2rem]">
               <div className="pb-[0.5rem] flex justify-center items-center">
-                <div className="w-fit px-2 py-[5px] text-center text-[1.2rem]">You chose {results.prediction.side_predicted} and it landed on {results.result}</div>
+                {/* <div className="w-fit px-2 py-[5px] text-center text-[1.2rem]">You chose {side} and it landed on {results.coin_result}</div> */}
               </div>
               {isWon === true ? (
                 <div className="">

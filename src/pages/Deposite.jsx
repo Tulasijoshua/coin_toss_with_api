@@ -10,7 +10,7 @@ const Deposite = () => {
   const navigate = useNavigate()
   const [state, setState] = useState({
     details: {
-      balance: '',
+      deposit: '',
     },
     isRequesting: false,
   })
@@ -37,7 +37,7 @@ const Deposite = () => {
 
         <section className="w-full flex flex-col mb-3">
             <p className='text-[1.2rem]'>Amount</p>
-            <input value={state.details.balance} onChange={(e)=>setState({...state, details:{...state.details, balance: e.target.value}})} type="text" className='w-full h-[40px] px-2 text-[1.2rem] font-semibold border border-gray-500'/>
+            <input value={state.details.deposit} onChange={(e)=>setState({...state, details:{...state.details, deposit: e.target.value}})} type="text" className='w-full h-[40px] px-2 text-[1.2rem] font-semibold border border-gray-500'/>
         </section>
         <br /><br />
         <div className="w-full flex justify-center">
