@@ -4,12 +4,23 @@ import axios from 'axios'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../context/authContext'
 import { endpoint } from '../../utils/Endpoints'
+import Alert from '../../common/Alerts/Alert'
 
 const Login = () => {
     const navigate = useNavigate()
 
     const [state, setState] = useState({
         details: { email: '', password: '' }
+    })
+    const [isAlert, setAlert] = useState({
+        status: false,
+        text: '',
+        bigText: '',
+        type: '',
+        button: '',
+        action: ()=>{},
+        button1: '',
+        action1: ()=>{},
     })
 
     const SubmitLogin = (e) => {
@@ -27,25 +38,28 @@ const Login = () => {
             }))
             localStorage.setItem('token', res.data.tokens.access_token)
             localStorage.setItem('isLogin', 'true')
-
+            setAlert({...isAlert, status: true, text:"Login successful!", type: 'success'})
             navigate('/', {replace: true})
             // navigate('/')
         }).catch(err=>{
             console.log(err)
+            setAlert({...isAlert, status: true, text:"Both fields are required and maybe case sensitive", type: 'error'})
+
         })
     }
 
 
     return (
         <div className='w-full relative h-[100vh] overflow-hidden'>
+            <Alert big={isAlert.bigText} button1={isAlert.button} action1={()=>isAlert.action()} isON={isAlert.status} type={isAlert.type} message={isAlert.text} setON={(val)=>setAlert({...isAlert, status: false, text: ''})}/>
             <div className='bgLogin w-full h-full flex text-white flex-col justify-center items-center z-10'>
-                <div className='max-w-[30rem] w-[40%]  mx-auto  text-white overflow-auto'>
+                <div className='max-w-[30rem] xl:w-[40%] sm:w-[60%] w-[80%]  mx-auto  text-white overflow-auto'>
                     <div className='w-full h-full'>
                         <div className='w-full text-center pb-4'>
                             <h2 className='text-[3rem] capitalize font-semibold'>welcome back!</h2>
                             <p className='text-[1.1rem]'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eius.</p>
                         </div>
-                        <section className="w-[80%] mx-auto py-[2rem]">
+                        <section className="xl:w-[80%] w-[90%] mx-auto py-[2rem]">
                             <form onSubmit={(e)=>SubmitLogin(e)} className='w-full flex flex-col justify-center items-center'>
                                 <div className='w-full mb-8 flex items-center gap-[0.7rem] py-[0.2rem] px-[1rem] border border-white'>
                                     <div>

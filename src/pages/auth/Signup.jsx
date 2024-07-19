@@ -3,6 +3,7 @@ import bgImg from '../../assets/predict02.jpg'
 import axios from 'axios'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../context/authContext'
+import Alert from '../../common/Alerts/Alert'
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -14,7 +15,16 @@ const Signup = () => {
         password: "",
         password_confirm: "",
     })
-
+    const [isAlert, setAlert] = useState({
+        status: false,
+        text: '',
+        bigText: '',
+        type: '',
+        button: '',
+        action: ()=>{},
+        button1: '',
+        action1: ()=>{},
+    })
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ 
@@ -26,17 +36,19 @@ const Signup = () => {
     const handleSignup = (e) => {
         e.preventDefault();
         signup(formValues);
+
     }
     return (
         <div className='w-full relative h-[100vh] overflow-hidden'>
+            <Alert big={isAlert.bigText} button1={isAlert.button} action1={()=>isAlert.action()} isON={isAlert.status} type={isAlert.type} message={isAlert.text} setON={(val)=>setAlert({...isAlert, status: false, text: ''})}/>
             <div className='bgLogin w-full h-full flex text-white flex-col justify-center items-center z-10 '>
-                <div className='max-w-[30rem] w-[40%] py-[1rem]  mx-auto  text-white overflow-auto'>
+                <div className='max-w-[30rem] xl:w-[40%] sm:w-[60%] w-[80%] py-[1rem]  mx-auto  text-white overflow-auto'>
                     <div className='w-full h-full'>
                         <div className='w-full text-center pb-4'>
                             <h2 className='text-[3rem] font-semibold'>Sign up now</h2>
                             <p className='text-[1.1rem]'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eius.</p>
                         </div>
-                        <section className="w-[80%] mx-auto py-[2rem]">
+                        <section className="xl:w-[80%] w-[90%] mx-auto py-[2rem]">
                             <form onSubmit={handleSignup} className='w-full flex flex-col justify-center items-center'>
                                 <div className='w-full mb-8 flex items-center gap-[0.7rem] py-[0.2rem] px-[1rem] border border-white'>
                                     <div>
@@ -67,7 +79,7 @@ const Signup = () => {
                                     </div>
                                     <div className='text-[2rem] font-light'>|</div>
 
-                                    <input name='username' value={formValues.username} onChange={handleChange} type="text" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter username' />
+                                    <input name='username' value={formValues.username} onChange={handleChange} type="text" className="xl:w-[70%] w-[90%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Enter username' />
                                 </div>
                                 <div className='w-full mb-8 flex items-center gap-[0.7rem] py-[0.2rem] px-[1rem] border border-white'>
                                     <div>
@@ -98,8 +110,8 @@ const Signup = () => {
                                     <input name='password_confirm' value={formValues.password_confirm} onChange={handleChange} type="password" className="w-[70%] text-[1.1rem] placeholder:text-white bg-transparent border-none outline-none" placeholder='Confirm your Password' />
                                 </div>
 
-                                <div className='w-full flex justify-between items-center mb-10'>
-                                    <div className='flex justify-center items-center gap-3'>
+                                <div className='w-full flex sm:flex-row flex-col justify-between sm:items-center mb-10'>
+                                    <div className='flex sm:justify-center items-center gap-3'>
                                         <input type="checkbox" className='w-4 h-4 bg-transparent' />
                                         <div className='text-[1rem]'>Stay logged in</div>
                                     </div>

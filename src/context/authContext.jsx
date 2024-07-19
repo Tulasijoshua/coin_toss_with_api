@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/config";
+import Alert from "../common/Alerts/Alert";
 
 const AuthContext = createContext();
 
@@ -15,6 +16,16 @@ const AuthProvider = ({ children }) => {
   });
   const [isLogin, setIsLogin] = useState(false)
   const navigate = useNavigate()
+  const [isAlert, setAlert] = useState({
+    status: false,
+    text: '',
+    bigText: '',
+    type: '',
+    button: '',
+    action: ()=>{},
+    button1: '',
+    action1: ()=>{},
+})
 
   useEffect(() => {
     sessionStorage.setItem('user', JSON.stringify(user));
@@ -43,9 +54,19 @@ const AuthProvider = ({ children }) => {
       .then(response => {
         console.log(response.data)
         setSignMsg(response.data)
+        setAlert({...isAlert, status: true, text:"Signup successful!", type: 'success'})
+
         navigate('/confirm')
       }).catch(err => {
         console.error(err)
+        const errMsg = err.response.data.error;
+        if(err.response.data.error) {
+          setAlert({...isAlert, status: true, text: errMsg, type: 'error'})
+
+        } else {
+          setAlert({...isAlert, status: true, text:"All fields are required and maybe case sensitive", type: 'error'})
+        }
+
       })
   };
 
@@ -60,7 +81,8 @@ const AuthProvider = ({ children }) => {
   };
 
   return <AuthContext.Provider value={{user, login, signup, logout, isLogin}}>
-        {children}
+          <Alert big={isAlert.bigText} button1={isAlert.button} action1={()=>isAlert.action()} isON={isAlert.status} type={isAlert.type} message={isAlert.text} setON={(val)=>setAlert({...isAlert, status: false, text: ''})}/>
+          {children}
     </AuthContext.Provider>
 };
 
